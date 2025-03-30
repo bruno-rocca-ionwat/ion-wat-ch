@@ -6,7 +6,7 @@ import Markdown from '../components/Markdown.astro';
 const explainer = `
 IONWATCH systems,designed in Europe,made in America, track the energy production for solar,wind and wave.
 
-<!-- Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
+<!-- Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), [...]
 Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.  -->
 `;
 ---
@@ -51,7 +51,7 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
   }
 </style>
 
-<video class="background-video" autoplay muted loop>
+<video class="background-video" autoplay muted loop playsinline>
   <source src="/videos/ionwatch-background.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -59,10 +59,10 @@ Any page or data can be rebuilt only when needed, without site visitors ever get
 <Layout title="Welcome to OutreLA.">
   <div class="content">
     <ContextAlert class="mb-8" />
- <h1 class="mb-10">CONNECTED SENSORS for INDUSTRIAL SYSTEMS</h1>
+    <h1 class="mb-10">CONNECTED SENSORS for INDUSTRIAL SYSTEMS</h1>
     <Markdown content={explainer} class="mb-10 text-lg" />
     <p>
-        <a href="https://ionwat.ch/learnMore" class="btn btn-lg sm:min-w-64">Learn More</a>
+      <a href="https://ionwat.ch/learnMore" class="btn btn-lg sm:min-w-64">Learn More</a>
     </p>
   </div>
 </Layout>
