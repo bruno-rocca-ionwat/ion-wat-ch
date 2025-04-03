@@ -1,0 +1,201 @@
+---
+import { Image } from 'astro:assets';
+import ContextAlert from '../components/ContextAlert.astro';
+import Diff from '../components/Diff.astro';
+import Markdown from '../components/Markdown.astro';
+import Layout from '../layouts/Layout.astro';
+import { getNetlifyContext } from '../utils';
+
+const images = [
+  '/images/learnMore1.jpg',
+  '/images/learnMore2.jpg',
+  '/images/learnMore3.jpg',
+  '/images/learnMore4.jpg',
+  '/images/learnMore5.jpg',
+  '/images/learnMore6.jpg',
+  '/images/learnMore.jpg',
+  '/images/learnMore8.jpg'
+];
+
+const codeSnippets = [
+  `
+  ## BATTERIES DESIGNED FOR HARSH ENVIRONMENTS ##
+  ~~~jsx
+  // Code snippet - 1
+ProductName: Qty 1 each 
+   [Dimension > (200 x 100 x 30)mm; (11 x 8x 7)inches
+   [Weight > 58V]  --------------------[( )]----(ChargeRelay)
+
+Material: ABS
+   [Melt Temp  200C ]
+    [Burn Temp 400C ]
+
+Commercial: Delivery: 3 DAYS ARO
+   [Warranty = Limited 1 year 
+   [Price = $10 for <10 pieces, = $5 for 10 pieces or more.
+
+Usage: INSIDE USE ONLY
+   [Perfect for use withj]
+   [Do not put water inside]
+   [NOT TempFault]  ---------------------------[( )]----(ChargeRelay)
+  ~~~
+  `,
+  `
+  ## DURABLE AND WATERPROOF EXTERIOR ENCLOSURES ##
+  ~~~jsx
+---
+product description:
+product details:
+material: ABS 
+material characteristics: Melt Point 100C, Resistant to UV, 
+---
+// Delivery...3 days after payment
+Shipped Worldwide. 
+  ~~~
+  `,
+  `
+  ##   WORK WITH ALL TYPES OF INVERTERS ##
+  ~~~jsx
+---
+product description:
+product details:
+material: ABS 
+material characteristics: Melt Point 100C, Resistant to UV, 
+---
+// Delivery...3 days after payment
+Shipped Worldwide. 
+  ~~~
+  `,
+  `
+  ## INTELLIGENT LOAD OPTIMZATION TO MAXIMIZE SOLAR PRODUCTION ##
+  ~~~jsx
+---
+product description:
+product details:
+material: ABS 
+material characteristics: Melt Point 100C, Resistant to UV, 
+---
+// Delivery...3 days after payment
+Shipped Worldwide. 
+  ~~~
+  `,
+  `
+  ## GET ALL THE POWER YOU CAN - ELIMINATE PEAK CUT-OFF ##
+  ~~~jsx
+---
+product description:
+product details:
+material: ABS 
+material characteristics: Melt Point 100C, Resistant to UV, 
+---
+// Delivery...3 days after payment
+Shipped Worldwide. 
+  ~~~
+  `,
+  `
+  ## ALL COMPONENTS TESTED PRIOR TO INSTALL ##
+  ~~~jsx
+---
+product description:
+product details:
+material: ABS 
+material characteristics: Melt Point 100C, Resistant to UV, 
+---
+// Delivery...3 days after payment
+Shipped Worldwide. 
+  ~~~
+  `,
+  `
+  ## VIRTUAL TWIN FOR ALL SYSTEMS TO MONITOR AND OPTIMMIZE YOUR INVESTMENT ##
+  ~~~jsx
+---
+product description:
+product details:
+material: ABS 
+material characteristics: Melt Point 100C, Resistant to UV, 
+---
+// Delivery...3 days after payment
+Shipped Worldwide. 
+  ~~~
+  `,
+  `
+  ## BATTERY COOLING AND HEATING TO GUARANTEE LONG-LIFE ##
+  ~~~jsx
+---
+product description:
+product details:
+material: ABS 
+material characteristics: Melt Point 100C, Resistant to UV, 
+---
+// Delivery...3 days after payment
+Shipped Worldwide. 
+  ~~~
+  `
+];
+
+const ctx = getNetlifyContext();
+const forceWebP = ctx === 'dev';
+const sampleImageSrcSet = (sampleImage) => [640, 1280, 2048]
+  .map((size) => {
+    return `/.netlify/images?url=${sampleImage}&w=${size}${forceWebP ? '&fm=webp' : ''} ${size}w`;
+  })
+  .join(', ');
+const sizes = '(max-width: 1024px) 100vw, 1024px';
+
+const devModeWarning = `
+  In local development, optimization is performed locally without automatic format
+  detection, so format is set to WebP.
+`;
+---
+
+<Layout title="Image CDN">
+  <div class="flex flex-col gap-12 sm:gap-16">
+    <!-- Existing Sections -->
+    <section>
+      <ContextAlert
+        addedChecksFunction={(ctx) => {
+          return ctx === 'dev' ? devModeWarning : null;
+        }}
+        class="mb-8"
+      />
+      <h1>EXPLORE THE IONSTORE DIFFERENCE</h1>
+    </section>
+    
+    <!-- New Sections -->
+    {images.map((image, index) => (
+      <section key={index}>
+        <Markdown content={codeSnippets[index]} class="mb-8" />
+        <figure>
+          <Image src={image} alt={`SENSOR ${index + 1}`} class="border-2 border-white rounded-lg" />
+          <figcaption class="mt-2 text-sm italic">
+            Learn More: Click for <a href="https://3dpzip.com">More Images</a> or
+            <a href="https://3dpzip.com"> here for Spec Sheets </a>
+          </figcaption>
+        </figure>
+      </section>
+    ))}
+  </div>
+</Layout>
+
+<script>
+  const images = document.querySelectorAll<HTMLImageElement>('.image-diff img');
+
+  images.forEach((image) => {
+    if (image.complete) {
+      showImageSize(image);
+    } else {
+      image.addEventListener('load', () => {
+        showImageSize(image);
+      });
+    }
+  });
+
+  function showImageSize(image: HTMLImageElement) {
+    const imageEntry = window?.performance?.getEntriesByName(image.currentSrc)?.[0] as PerformanceResourceTiming;
+    if (imageEntry && imageEntry.encodedBodySize) {
+      const imageOverlay = image.previousElementSibling;
+      imageOverlay.classList.remove('hidden');
+      imageOverlay.textContent = `Size: ${Math.ceil(imageEntry.encodedBodySize / 1024)}KB`;
+    }
+  }
+</script>
